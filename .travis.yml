@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jesselee/react-test -f ./client/Dockerfile.dev ./client
+
+# run the test on just installed image
+script:
+  #  those -- -- coverage make sure it can go out
+  - docker run jesselee/react-test npm test -- --coverage
+
+# all above test have been pass now
+after_success:
+  - docker build -t jesselee/multi-client ./client
+  - docker build -t jesselee/multi-nginx ./nginx
+  - docker build -t jesselee/multi-server ./server
+  - docker build -t jesselee/multi-worker ./worker
+
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_IDd" --password-stdin
+
+  # Take those images and push them to docker hub
+  - docker push jesselee/multi-client
+  - docker push jesselee/multi-nginx
+  - docker push jesselee/multi-server
+  - docker push jesselee/multi-worker
