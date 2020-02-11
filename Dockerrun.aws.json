@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            // This is the name of container that is gonna show on dashboard. You can identify it
+            "name": "client",
+            // docker hub
+            "image": "jesselee/multi-client",
+            // check the ./nginx/default.conf
+            "hostname": "client",
+            // If it is crushed then, other container are fine
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "jesselee/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "jesselee/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "jesselee/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        }
+    ]
+}
